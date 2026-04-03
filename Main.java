@@ -26,7 +26,7 @@ public class Main {
             System.out.print("Seleccione una opción: ");
 
             opcion = sc.nextInt();
-            sc.nextLine(); // 🔥 limpiar buffer
+            sc.nextLine(); // limpiar buffer
 
             switch (opcion) {
 
@@ -56,7 +56,7 @@ public class Main {
                         ArrayList<Integer> valores = new ArrayList<>();
 
                         for (Pregunta p : seleccionada.getPreguntas()) {
-                            System.out.println(p.getTexto() + " (1-5): ");
+                            System.out.print(p.getTexto() + " (1-5): ");
                             int val = sc.nextInt();
                             sc.nextLine();
                             valores.add(val);
@@ -73,23 +73,36 @@ public class Main {
                 case 3:
                     System.out.println("\n=== RESULTADOS ===");
 
+                    int suma = 0;
+                    int total = 0;
+
                     for (Respuesta r : sistema.getRespuestas()) {
                         System.out.println("Pregunta: " + r.getPregunta().getTexto());
                         System.out.println("Respuesta: " + r.getValor());
                         System.out.println("Fecha: " + r.getFecha());
                         System.out.println("-------------------");
+
+                        suma += r.getValor();
+                        total++;
+                    }
+
+                    if (total > 0) {
+                        double promedio = (double) suma / total;
+                        System.out.println("⭐ Promedio general: " + promedio);
+                    } else {
+                        System.out.println("No hay respuestas aún.");
                     }
                     break;
 
                 case 0:
-                    System.out.println("Saliendo...");
+                    System.out.println("Saliendo del sistema...");
                     break;
 
                 default:
                     System.out.println("❌ Opción inválida");
             }
 
-            // 🔥 pausa para que no “salte” el menú
+            // pausa
             if (opcion != 0) {
                 System.out.println("\nPresione ENTER para continuar...");
                 sc.nextLine();
