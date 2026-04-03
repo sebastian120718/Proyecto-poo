@@ -6,69 +6,96 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-
         SistemaEncuestas sistema = new SistemaEncuestas();
 
-        // 🔹 Crear encuesta (simula que ya existe en el sistema)
-        Encuesta encuesta = new Encuesta(1, "Encuesta de satisfacción USB");
-        sistema.agregarEncuesta(encuesta);
+        // Crear encuestas
+        Encuesta e1 = new Encuesta(1, "Encuesta Universidad");
+        Encuesta e2 = new Encuesta(2, "Encuesta Servicios");
 
-        System.out.println("=== SISTEMA DE ENCUESTAS ===\n");
+        sistema.agregarEncuesta(e1);
+        sistema.agregarEncuesta(e2);
 
-        // 🔹 CASO DE USO: Ver encuestas disponibles
-        System.out.println("Encuestas disponibles:");
-        System.out.println("1. " + encuesta.getTitulo());
+        int opcion;
 
-        // 🔹 CASO DE USO: Elegir encuesta
-        System.out.print("\nSeleccione una encuesta (1): ");
-        int opcion = sc.nextInt();
+        do {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1. Ver encuestas");
+            System.out.println("2. Responder encuesta");
+            System.out.println("3. Ver resultados");
+            System.out.println("0. Salir");
+            System.out.print("Seleccione una opción: ");
 
-        if (opcion != 1) {
-            System.out.println("Opción inválida");
-            return;
-        }
+            opcion = sc.nextInt();
+            sc.nextLine(); // 🔥 limpiar buffer
 
-        // 🔹 CASO DE USO: Ver detalles
-        System.out.println("\nHas seleccionado: " + encuesta.getTitulo());
+            switch (opcion) {
 
-        // 🔹 CASO DE USO: Empezar a responder
-        ArrayList<Integer> valores = new ArrayList<>();
+                case 1:
+                    System.out.println("\n=== LISTA DE ENCUESTAS ===");
+                    for (Encuesta e : sistema.getEncuestas()) {
+                        System.out.println("ID: " + e.getId() + " - " + e.getTitulo());
+                    }
+                    break;
 
-        for (Pregunta p : encuesta.getPreguntas()) {
+                case 2:
+                    System.out.println("\n=== RESPONDER ENCUESTA ===");
+                    System.out.print("Ingrese el ID de la encuesta: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
 
-            int valor;
+                    Encuesta seleccionada = null;
 
-            do {
-                System.out.println("\n" + p.getTexto());
-                System.out.println("1 = Muy malo | 2 = Malo | 3 = Regular | 4 = Bueno | 5 = Excelente");
-                System.out.print("Respuesta: ");
+                    for (Encuesta e : sistema.getEncuestas()) {
+                        if (e.getId() == id) {
+                            seleccionada = e;
+                        }
+                    }
 
-                valor = sc.nextInt();
+                    if (seleccionada != null) {
 
-                if (!p.validar(valor)) {
-                    System.out.println("❌ Debe ser entre 1 y 5");
-                }
+                        ArrayList<Integer> valores = new ArrayList<>();
 
-            } while (!p.validar(valor));
+                        for (Pregunta p : seleccionada.getPreguntas()) {
+                            System.out.println(p.getTexto() + " (1-5): ");
+                            int val = sc.nextInt();
+                            sc.nextLine();
+                            valores.add(val);
+                        }
 
-            valores.add(valor);
-        }
+                        sistema.responderEncuesta(seleccionada, valores);
+                        System.out.println("✅ Encuesta respondida correctamente");
 
-        // 🔹 CASO DE USO: Guardar y enviar respuestas
-        sistema.responderEncuesta(encuesta, valores);
-        System.out.println("\n✅ Respuestas guardadas correctamente");
+                    } else {
+                        System.out.println("❌ Encuesta no encontrada");
+                    }
+                    break;
 
-        // 🔹 CASO DE USO: Ver resultados
-        ResultadoEncuesta resultado = new ResultadoEncuesta();
-        resultado.calcular(sistema.getRespuestas());
+                case 3:
+                    System.out.println("\n=== RESULTADOS ===");
 
-        System.out.println("\n=== RESULTADOS ===");
-        System.out.println("Promedio: " + resultado.getPromedioGeneral());
-        System.out.println("Fortalezas: " + resultado.obtenerFortalezas());
-        System.out.println("Oportunidades: " + resultado.obtenerOportunidades());
+                    for (Respuesta r : sistema.getRespuestas()) {
+                        System.out.println("Pregunta: " + r.getPregunta().getTexto());
+                        System.out.println("Respuesta: " + r.getValor());
+                        System.out.println("Fecha: " + r.getFecha());
+                        System.out.println("-------------------");
+                    }
+                    break;
 
-        // 🔹 CASO DE USO: Volver al inicio (simulado)
-        System.out.println("\n🔄 Volviendo al inicio...");
+                case 0:
+                    System.out.println("Saliendo...");
+                    break;
+
+                default:
+                    System.out.println("❌ Opción inválida");
+            }
+
+            // 🔥 pausa para que no “salte” el menú
+            if (opcion != 0) {
+                System.out.println("\nPresione ENTER para continuar...");
+                sc.nextLine();
+            }
+
+        } while (opcion != 0);
 
         sc.close();
     }

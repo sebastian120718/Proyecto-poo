@@ -2,19 +2,23 @@ public class Respuesta {
 
     private int valor;
     private Pregunta pregunta;
-    private String fechaRegistro;
+    private String fecha;
 
     public Respuesta(int valor, Pregunta pregunta, String fecha) {
         this.valor = valor;
         this.pregunta = pregunta;
-        this.fechaRegistro = fecha;
-    }
-
-    public boolean esValida() {
-        return pregunta.validar(valor);
+        this.fecha = fecha;
     }
 
     public int getValor() {
         return valor;
+    }
+
+    public Pregunta getPregunta() {
+        return pregunta;
+    }
+
+    public String getFecha() {
+        return fecha;
     }
 }
