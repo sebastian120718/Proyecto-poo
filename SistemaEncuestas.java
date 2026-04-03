@@ -14,12 +14,20 @@ public class SistemaEncuestas {
         encuestas.add(e);
     }
 
-    public Encuesta obtenerEncuesta() {
-        return encuestas.get(0); // simplificado
-    }
+    public void responderEncuesta(Encuesta encuesta, ArrayList<Integer> valores) {
 
-    public void guardarRespuesta(Respuesta r) {
-        respuestas.add(r);
+        ArrayList<Pregunta> preguntas = encuesta.getPreguntas();
+
+        for (int i = 0; i < preguntas.size(); i++) {
+
+            int valor = valores.get(i);
+            Pregunta p = preguntas.get(i);
+
+            if (p.validar(valor)) {
+                Respuesta r = new Respuesta(valor, p, "2026");
+                respuestas.add(r);
+            }
+        }
     }
 
     public ArrayList<Respuesta> getRespuestas() {
