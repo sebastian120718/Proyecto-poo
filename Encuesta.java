@@ -13,7 +13,7 @@ public class Encuesta {
         cargarPreguntas();
     }
 
-    // 🔥 Carga automática de preguntas según la encuesta
+    //  Carga automática de preguntas según la encuesta
     private void cargarPreguntas() {
 
         if (id == 1) {
@@ -31,7 +31,7 @@ public class Encuesta {
         // puedes agregar más encuestas si quieres
     }
 
-    // 🔥 GETTERS necesarios
+    //  GETTERS necesarios
 
     public int getId() {
         return id;

@@ -30,7 +30,6 @@ public class SistemaEncuestas {
         }
     }
 
-    // 🔥 ESTE ERA EL QUE TE FALTABA
     public ArrayList<Encuesta> getEncuestas() {
         return encuestas;
     }

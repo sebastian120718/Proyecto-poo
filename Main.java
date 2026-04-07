@@ -63,10 +63,10 @@ public class Main {
                         }
 
                         sistema.responderEncuesta(seleccionada, valores);
-                        System.out.println("✅ Encuesta respondida correctamente");
+                        System.out.println("Encuesta respondida correctamente");
 
                     } else {
-                        System.out.println("❌ Encuesta no encontrada");
+                        System.out.println( "Encuesta no encontrada");
                     }
                     break;
 
@@ -88,7 +88,7 @@ public class Main {
 
                     if (total > 0) {
                         double promedio = (double) suma / total;
-                        System.out.println("⭐ Promedio general: " + promedio);
+                        System.out.println("Promedio general: " + promedio);
                     } else {
                         System.out.println("No hay respuestas aún.");
                     }
@@ -99,7 +99,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("❌ Opción inválida");
+                    System.out.println("Opción inválida");
             }
 
             // pausa
