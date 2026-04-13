@@ -1,3 +1,5 @@
+import java.nio.channels.Pipe.SourceChannel;
+
 public class Pregunta {
 
     private int id;
@@ -13,6 +15,12 @@ public class Pregunta {
     }
 
     public boolean validar(int valor) {
-        return valor >= 1 && valor <= 5;
+    if (valor >= 1 && valor <= 5) {
+        return true;
+    } else {
+        System.out.println("Error: el valor debe estar entre 1 y 5");
+        return false;
     }
+}
+    
 }
