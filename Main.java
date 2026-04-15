@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void mostrarEncuestas(SistemaEncuestas sistema) {
+    public static void mostrarEncuestas(SistemaGestionEncuestas sistema) {
         System.out.println("\n=== LISTA DE ENCUESTAS ===");
-        for (Encuesta e : sistema.getEncuestas()) {
+        for (EncuestaAcademica e : sistema.getEncuestas()) {
             System.out.println("ID: " + e.getId() + " - " + e.getTitulo());
         }
     }
@@ -13,11 +13,11 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        SistemaEncuestas sistema = new SistemaEncuestas();
-        Usuario usuario = new Usuario();
+        SistemaGestionEncuestas sistema = new SistemaGestionEncuestas();
+        EncuestadoRegistrado usuario = new EncuestadoRegistrado();
 
-        Encuesta e1 = new Encuesta(1, "Encuesta Universidad");
-        Encuesta e2 = new Encuesta(2, "Encuesta Servicios");
+        EncuestaAcademica e1 = new EncuestaAcademica(1, "Encuesta Universidad");
+        EncuestaAcademica e2 = new EncuestaAcademica(2, "Encuesta Servicios");
 
         sistema.agregarEncuesta(e1);
         sistema.agregarEncuesta(e2);
@@ -46,16 +46,15 @@ public class Main {
 
                     mostrarEncuestas(sistema);
 
-                    Encuesta seleccionada = null;
+                    EncuestaAcademica seleccionada = null;
 
-                    
                     while (seleccionada == null) {
 
                         System.out.print("\nIngrese el ID de la encuesta: ");
                         int id = sc.nextInt();
                         sc.nextLine();
 
-                        for (Encuesta e : sistema.getEncuestas()) {
+                        for (EncuestaAcademica e : sistema.getEncuestas()) {
                             if (e.getId() == id) {
                                 seleccionada = e;
                             }
@@ -68,7 +67,7 @@ public class Main {
 
                     ArrayList<Integer> valores = new ArrayList<>();
 
-                    for (Pregunta p : seleccionada.getPreguntas()) {
+                    for (PreguntaCalificacion p : seleccionada.getPreguntas()) {
                         System.out.print(p.getTexto() + " (1-5): ");
                         int val = sc.nextInt();
                         sc.nextLine();
@@ -86,7 +85,7 @@ public class Main {
                     int suma = 0;
                     int total = 0;
 
-                    for (Respuesta r : usuario.getRespuestas()) {
+                    for (RespuestaUsuario r : usuario.getRespuestas()) {
                         System.out.println("Pregunta: " + r.getPregunta().getTexto());
                         System.out.println("Respuesta: " + r.getValor());
                         System.out.println("Fecha: " + r.getFecha());

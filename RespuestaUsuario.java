@@ -1,10 +1,10 @@
-public class Respuesta {
+public class RespuestaUsuario {
 
     private int valor;
-    private Pregunta pregunta;
+    private PreguntaCalificacion pregunta;
     private String fecha;
 
-    public Respuesta(int valor, Pregunta pregunta, String fecha) {
+    public RespuestaUsuario(int valor, PreguntaCalificacion pregunta, String fecha) {
         this.valor = valor;
         this.pregunta = pregunta;
         this.fecha = fecha;
@@ -14,7 +14,7 @@ public class Respuesta {
         return valor;
     }
 
-    public Pregunta getPregunta() {
+    public PreguntaCalificacion getPregunta() {
         return pregunta;
     }
 

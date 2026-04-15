@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
-public class ResultadoEncuesta {
+public class AnalizadorResultados {
 
     private int totalRespuestas;
     private double promedioGeneral;
 
-    public void calcular(ArrayList<Respuesta> respuestas) {
+    public void calcular(ArrayList<RespuestaUsuario> respuestas) {
         int suma = 0;
 
-        for (Respuesta r : respuestas) {
+        for (RespuestaUsuario r : respuestas) {
             suma += r.getValor();
         }
 
