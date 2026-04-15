@@ -13,7 +13,6 @@ public class Encuesta {
         cargarPreguntas();
     }
 
-    //  Carga automática de preguntas según la encuesta
     private void cargarPreguntas() {
 
         if (id == 1) {
@@ -23,15 +22,12 @@ public class Encuesta {
         }
 
         else if (id == 2) {
-            preguntas.add(new Pregunta(1, "¿Cómo calificas el servicio recibido?"));
+            preguntas.add(new Pregunta(1, "¿Cómo calificas el servicio recibido en bibloteca"));
             preguntas.add(new Pregunta(2, "¿Recomendarías la institución?"));
             preguntas.add(new Pregunta(3, "¿Cómo calificas la atención al cliente?"));
         }
 
-        // puedes agregar más encuestas si quieres
     }
-
-    //  GETTERS necesarios
 
     public int getId() {
         return id;

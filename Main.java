@@ -3,12 +3,19 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static void mostrarEncuestas(SistemaEncuestas sistema) {
+        System.out.println("\n=== LISTA DE ENCUESTAS ===");
+        for (Encuesta e : sistema.getEncuestas()) {
+            System.out.println("ID: " + e.getId() + " - " + e.getTitulo());
+        }
+    }
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         SistemaEncuestas sistema = new SistemaEncuestas();
+        Usuario usuario = new Usuario();
 
-        // Crear encuestas
         Encuesta e1 = new Encuesta(1, "Encuesta Universidad");
         Encuesta e2 = new Encuesta(2, "Encuesta Servicios");
 
@@ -26,48 +33,51 @@ public class Main {
             System.out.print("Seleccione una opción: ");
 
             opcion = sc.nextInt();
-            sc.nextLine(); // limpiar buffer
+            sc.nextLine();
 
             switch (opcion) {
 
                 case 1:
-                    System.out.println("\n=== LISTA DE ENCUESTAS ===");
-                    for (Encuesta e : sistema.getEncuestas()) {
-                        System.out.println("ID: " + e.getId() + " - " + e.getTitulo());
-                    }
+                    mostrarEncuestas(sistema);
                     break;
 
                 case 2:
                     System.out.println("\n=== RESPONDER ENCUESTA ===");
-                    System.out.print("Ingrese el ID de la encuesta: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
+
+                    mostrarEncuestas(sistema);
 
                     Encuesta seleccionada = null;
 
-                    for (Encuesta e : sistema.getEncuestas()) {
-                        if (e.getId() == id) {
-                            seleccionada = e;
+                    
+                    while (seleccionada == null) {
+
+                        System.out.print("\nIngrese el ID de la encuesta: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+
+                        for (Encuesta e : sistema.getEncuestas()) {
+                            if (e.getId() == id) {
+                                seleccionada = e;
+                            }
+                        }
+
+                        if (seleccionada == null) {
+                            System.out.println(" Encuesta no encontrada, intente de nuevo.");
                         }
                     }
 
-                    if (seleccionada != null) {
+                    ArrayList<Integer> valores = new ArrayList<>();
 
-                        ArrayList<Integer> valores = new ArrayList<>();
-
-                        for (Pregunta p : seleccionada.getPreguntas()) {
-                            System.out.print(p.getTexto() + " (1-5): ");
-                            int val = sc.nextInt();
-                            sc.nextLine();
-                            valores.add(val);
-                        }
-
-                        sistema.responderEncuesta(seleccionada, valores);
-                        System.out.println("Encuesta respondida correctamente");
-
-                    } else {
-                        System.out.println( "Encuesta no encontrada");
+                    for (Pregunta p : seleccionada.getPreguntas()) {
+                        System.out.print(p.getTexto() + " (1-5): ");
+                        int val = sc.nextInt();
+                        sc.nextLine();
+                        valores.add(val);
                     }
+
+                    usuario.responderEncuesta(seleccionada, valores);
+                    System.out.println("Encuesta respondida correctamente");
+
                     break;
 
                 case 3:
@@ -76,7 +86,7 @@ public class Main {
                     int suma = 0;
                     int total = 0;
 
-                    for (Respuesta r : sistema.getRespuestas()) {
+                    for (Respuesta r : usuario.getRespuestas()) {
                         System.out.println("Pregunta: " + r.getPregunta().getTexto());
                         System.out.println("Respuesta: " + r.getValor());
                         System.out.println("Fecha: " + r.getFecha());
@@ -88,7 +98,7 @@ public class Main {
 
                     if (total > 0) {
                         double promedio = (double) suma / total;
-                        System.out.println("Promedio general: " + promedio);
+                        System.out.println(" Promedio general: " + promedio);
                     } else {
                         System.out.println("No hay respuestas aún.");
                     }
@@ -99,10 +109,9 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opción inválida");
+                    System.out.println(" Opción inválida");
             }
 
-            // pausa
             if (opcion != 0) {
                 System.out.println("\nPresione ENTER para continuar...");
                 sc.nextLine();
