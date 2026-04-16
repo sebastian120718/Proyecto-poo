@@ -8,6 +8,10 @@ public class PreguntaCalificacion {
         this.texto = texto;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getTexto() {
         return texto;
     }

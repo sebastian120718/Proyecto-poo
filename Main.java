@@ -16,6 +16,7 @@ public class Main {
         SistemaGestionEncuestas sistema = new SistemaGestionEncuestas();
         EncuestadoRegistrado usuario = new EncuestadoRegistrado();
 
+        // Crear encuestas
         EncuestaAcademica e1 = new EncuestaAcademica(1, "Encuesta Universidad");
         EncuestaAcademica e2 = new EncuestaAcademica(2, "Encuesta Servicios");
 
@@ -61,7 +62,7 @@ public class Main {
                         }
 
                         if (seleccionada == null) {
-                            System.out.println(" Encuesta no encontrada, intente de nuevo.");
+                            System.out.println("Encuesta no encontrada, intente de nuevo.");
                         }
                     }
 
@@ -82,25 +83,99 @@ public class Main {
                 case 3:
                     System.out.println("\n=== RESULTADOS ===");
 
-                    int suma = 0;
-                    int total = 0;
+                    ArrayList<RespuestaUsuario> respuestas = usuario.getRespuestas();
 
-                    for (RespuestaUsuario r : usuario.getRespuestas()) {
-                        System.out.println("Pregunta: " + r.getPregunta().getTexto());
-                        System.out.println("Respuesta: " + r.getValor());
-                        System.out.println("Fecha: " + r.getFecha());
-                        System.out.println("-------------------");
-
-                        suma += r.getValor();
-                        total++;
-                    }
-
-                    if (total > 0) {
-                        double promedio = (double) suma / total;
-                        System.out.println(" Promedio general: " + promedio);
-                    } else {
+                    if (respuestas.isEmpty()) {
                         System.out.println("No hay respuestas aún.");
+                        break;
                     }
+
+                    // Seleccionar encuesta
+                    mostrarEncuestas(sistema);
+
+                    EncuestaAcademica encuestaSeleccionada = null;
+
+                    while (encuestaSeleccionada == null) {
+
+                        System.out.print("\nIngrese el ID de la encuesta: ");
+                        int id = sc.nextInt();
+                        sc.nextLine();
+
+                        for (EncuestaAcademica e : sistema.getEncuestas()) {
+                            if (e.getId() == id) {
+                                encuestaSeleccionada = e;
+                            }
+                        }
+
+                        if (encuestaSeleccionada == null) {
+                            System.out.println("Encuesta no encontrada, intente de nuevo.");
+                        }
+                    }
+
+                    // Filtrar respuestas de esa encuesta
+                    ArrayList<RespuestaUsuario> respuestasFiltradas = new ArrayList<>();
+
+                    for (RespuestaUsuario r : respuestas) {
+                        for (PreguntaCalificacion p : encuestaSeleccionada.getPreguntas()) {
+                            if (r.getPregunta().getId() == p.getId()) {
+                                respuestasFiltradas.add(r);
+                            }
+                        }
+                    }
+
+                    if (respuestasFiltradas.isEmpty()) {
+                        System.out.println("No hay respuestas para esta encuesta.");
+                        break;
+                    }
+
+                    // Analizar resultados
+                    AnalizadorResultados analizador = new AnalizadorResultados();
+                    analizador.calcular(respuestasFiltradas);
+
+                    System.out.println("\n--- " + encuestaSeleccionada.getTitulo() + " ---");
+
+                    // Resultados por pregunta
+                    for (PreguntaCalificacion pregunta : encuestaSeleccionada.getPreguntas()) {
+
+                        System.out.println("\nPregunta: " + pregunta.getTexto());
+
+                        int[] conteo = new int[5];
+                        int total = 0;
+
+                        for (RespuestaUsuario r : respuestasFiltradas) {
+                            if (r.getPregunta().getId() == pregunta.getId()) {
+                                int valor = r.getValor();
+                                conteo[valor - 1]++;
+                                total++;
+                            }
+                        }
+
+                        if (total == 0) {
+                            System.out.println("No hay respuestas para esta pregunta.");
+                        } else {
+                            for (int i = 0; i < 5; i++) {
+                                double porcentaje = (conteo[i] * 100.0) / total;
+                                System.out.println("Valor " + (i + 1) + ": "
+                                        + conteo[i] + " respuestas ("
+                                        + porcentaje + "%)");
+                            }
+                        }
+                    }
+
+                    // Promedio y análisis
+                    System.out.println("\nPromedio general: " + analizador.getPromedioGeneral());
+
+                    String fortaleza = analizador.obtenerFortalezas();
+                    String oportunidad = analizador.obtenerOportunidades();
+
+                    if (!fortaleza.isEmpty()) {
+                        System.out.println(fortaleza);
+                    }
+
+                    if (!oportunidad.isEmpty()) {
+                        System.out.println(oportunidad);
+                    }
+
                     break;
 
                 case 0:
@@ -108,7 +183,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println(" Opción inválida");
+                    System.out.println("Opción inválida");
             }
 
             if (opcion != 0) {
