@@ -18,7 +18,7 @@ public class EncuestadoRegistrado {
             PreguntaCalificacion p = preguntas.get(i);
 
             if (p.validar(valor)) {
-                RespuestaUsuario r = new RespuestaUsuario(valor, p, "2026");
+                RespuestaUsuario r = new RespuestaUsuario(valor, p, "2026", encuesta);
                 respuestas.add(r);
             }
         }

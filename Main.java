@@ -16,7 +16,6 @@ public class Main {
         SistemaGestionEncuestas sistema = new SistemaGestionEncuestas();
         EncuestadoRegistrado usuario = new EncuestadoRegistrado();
 
-        // Crear encuestas
         EncuestaAcademica e1 = new EncuestaAcademica(1, "Encuesta Universidad");
         EncuestaAcademica e2 = new EncuestaAcademica(2, "Encuesta Servicios");
 
@@ -44,13 +43,11 @@ public class Main {
 
                 case 2:
                     System.out.println("\n=== RESPONDER ENCUESTA ===");
-
                     mostrarEncuestas(sistema);
 
                     EncuestaAcademica seleccionada = null;
 
                     while (seleccionada == null) {
-
                         System.out.print("\nIngrese el ID de la encuesta: ");
                         int id = sc.nextInt();
                         sc.nextLine();
@@ -62,7 +59,7 @@ public class Main {
                         }
 
                         if (seleccionada == null) {
-                            System.out.println("Encuesta no encontrada, intente de nuevo.");
+                            System.out.println("Encuesta no encontrada.");
                         }
                     }
 
@@ -76,8 +73,7 @@ public class Main {
                     }
 
                     usuario.responderEncuesta(seleccionada, valores);
-                    System.out.println("Encuesta respondida correctamente");
-
+                    System.out.println("Encuesta respondida correctamente.");
                     break;
 
                 case 3:
@@ -90,13 +86,11 @@ public class Main {
                         break;
                     }
 
-                    // Seleccionar encuesta
                     mostrarEncuestas(sistema);
 
                     EncuestaAcademica encuestaSeleccionada = null;
 
                     while (encuestaSeleccionada == null) {
-
                         System.out.print("\nIngrese el ID de la encuesta: ");
                         int id = sc.nextInt();
                         sc.nextLine();
@@ -108,11 +102,10 @@ public class Main {
                         }
 
                         if (encuestaSeleccionada == null) {
-                            System.out.println("Encuesta no encontrada, intente de nuevo.");
+                            System.out.println("Encuesta no encontrada.");
                         }
                     }
 
-                    // Filtrar respuestas de esa encuesta
                     ArrayList<RespuestaUsuario> respuestasFiltradas = new ArrayList<>();
 
                     for (RespuestaUsuario r : respuestas) {
@@ -128,42 +121,17 @@ public class Main {
                         break;
                     }
 
-                    // Analizar resultados
                     AnalizadorResultados analizador = new AnalizadorResultados();
                     analizador.calcular(respuestasFiltradas);
 
                     System.out.println("\n--- " + encuestaSeleccionada.getTitulo() + " ---");
 
-                    // Resultados por pregunta
-                    for (PreguntaCalificacion pregunta : encuestaSeleccionada.getPreguntas()) {
+                    analizador.mostrarPorcentajes(
+                            respuestasFiltradas,
+                            encuestaSeleccionada);
 
-                        System.out.println("\nPregunta: " + pregunta.getTexto());
-
-                        int[] conteo = new int[5];
-                        int total = 0;
-
-                        for (RespuestaUsuario r : respuestasFiltradas) {
-                            if (r.getPregunta().getId() == pregunta.getId()) {
-                                int valor = r.getValor();
-                                conteo[valor - 1]++;
-                                total++;
-                            }
-                        }
-
-                        if (total == 0) {
-                            System.out.println("No hay respuestas para esta pregunta.");
-                        } else {
-                            for (int i = 0; i < 5; i++) {
-                                double porcentaje = (conteo[i] * 100.0) / total;
-                                System.out.println("Valor " + (i + 1) + ": "
-                                        + conteo[i] + " respuestas ("
-                                        + porcentaje + "%)");
-                            }
-                        }
-                    }
-
-                    // Promedio y análisis
-                    System.out.println("\nPromedio general: " + analizador.getPromedioGeneral());
+                    System.out.println("\nPromedio general: "
+                            + analizador.getPromedioGeneral());
 
                     String fortaleza = analizador.obtenerFortalezas();
                     String oportunidad = analizador.obtenerOportunidades();
@@ -183,7 +151,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opción inválida");
+                    System.out.println("Opción inválida.");
             }
 
             if (opcion != 0) {
