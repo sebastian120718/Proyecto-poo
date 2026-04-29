@@ -109,10 +109,10 @@ public class Main {
                     ArrayList<RespuestaUsuario> respuestasFiltradas = new ArrayList<>();
 
                     for (RespuestaUsuario r : respuestas) {
-                        for (PreguntaCalificacion p : encuestaSeleccionada.getPreguntas()) {
-                            if (r.getPregunta().getId() == p.getId()) {
-                                respuestasFiltradas.add(r);
-                            }
+                        if (r.getEncuesta().getId()
+                                == encuestaSeleccionada.getId()) {
+
+                            respuestasFiltradas.add(r);
                         }
                     }
 
@@ -121,10 +121,14 @@ public class Main {
                         break;
                     }
 
-                    AnalizadorResultados analizador = new AnalizadorResultados();
+                    AnalizadorResultados analizador =
+                            new AnalizadorResultados();
+
                     analizador.calcular(respuestasFiltradas);
 
-                    System.out.println("\n--- " + encuestaSeleccionada.getTitulo() + " ---");
+                    System.out.println("\n--- "
+                            + encuestaSeleccionada.getTitulo()
+                            + " ---");
 
                     analizador.mostrarPorcentajes(
                             respuestasFiltradas,
@@ -133,8 +137,11 @@ public class Main {
                     System.out.println("\nPromedio general: "
                             + analizador.getPromedioGeneral());
 
-                    String fortaleza = analizador.obtenerFortalezas();
-                    String oportunidad = analizador.obtenerOportunidades();
+                    String fortaleza =
+                            analizador.obtenerFortalezas();
+
+                    String oportunidad =
+                            analizador.obtenerOportunidades();
 
                     if (!fortaleza.isEmpty()) {
                         System.out.println(fortaleza);
